@@ -108,3 +108,48 @@ class CupcakeViewsTestCase(TestCase):
             })
 
             self.assertEqual(Cupcake.query.count(), 2)
+
+    def test_patch_cupcake(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.patch(url, json={"flavor":"chocolate", "rating":1000})
+
+            self.assertEqual(resp.status_code, 200)
+
+
+            self.assertEqual(resp.json, {
+                "cupcake": {
+                    "flavor": "chocolate",
+                    "size": "TestSize",
+                    "rating": 1000,
+                    "image": "http://test.com/cupcake.jpg",
+                    "id": self.cupcake.id
+                }
+            })
+
+            self.assertEqual(Cupcake.query.count(), 1)
+
+    def test_unsuccessful_patch_cupcake(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{100000}"
+            resp = client.patch(url, json={"flavor":"chocolate", "rating":1000})
+
+            self.assertEqual(resp.status_code, 404)
+
+    def test_delete_cupcake(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 200)
+
+            self.assertEqual(resp.json, {"delete": self.cupcake.id})
+
+            self.assertEqual(Cupcake.query.count(), 0)
+
+    def test_unsuccessful_delete_cupcake(self):
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{100000}"
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 404)
