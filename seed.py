@@ -8,7 +8,7 @@ db.create_all()
 c1 = Cupcake(
     flavor="cherry",
     size="large",
-    rating=5,
+    rating=5
 )
 
 c2 = Cupcake(
