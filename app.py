@@ -1,6 +1,5 @@
 """Flask app for Cupcakes"""
 
-import re
 from flask import Flask, jsonify, request
 
 from models import db, connect_db, Cupcake
@@ -16,16 +15,16 @@ db.create_all()
 
 @app.get('/api/cupcakes')
 def get_cupcakes():
-    """get data about all cupcakes, return JSON"""
+    """get data about all cupcakes, Respond with JSON like: {cupcakes: [{id, flavor, size, rating, image}, ...]}"""
 
-    cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
+    serialized_cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
 
-    return jsonify(cupcakes=cupcakes)
+    return jsonify(cupcakes=serialized_cupcakes)
 
 
 @app.get('/api/cupcakes/<int:cupcake_id>')
 def get_cupcake(cupcake_id):
-    """get data about a single cupcake"""
+    """get data about a single cupcake, Respond with JSON like: {cupcake: {id, flavor, size, rating, image}}"""
 
     cupcake = Cupcake.query.get_or_404(cupcake_id)
     serialized_cupcake = cupcake.serialize()
@@ -35,12 +34,12 @@ def get_cupcake(cupcake_id):
 
 @app.post('/api/cupcakes')
 def create_cupcake():
-    """create a cupcake, returns JSON with cupcake data"""
+    """create a cupcake, Respond with JSON like: {cupcake: {id, flavor, size, rating, image}}"""
 
     flavor = request.json['flavor']
     size = request.json['size']
     rating = request.json['rating']
-    image = request.json['image']
+    image = request.json['image'] or None
 
     cupcake = Cupcake(
         flavor=flavor,
