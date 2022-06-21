@@ -18,7 +18,7 @@ def get_cupcakes():
     """get data about all cupcakes, Respond with JSON like: 
         {cupcakes: [{id, flavor, size, rating, image}, ...]}"""
 
-    serialized_cupcakes = [cupcake.serialize() for cupcake in Cupcake.query.all()]
+    serialized_cupcakes = [cupcake.serialize() for cupcake in Cupcake.fetch_all_cupcakes()]
 
     return jsonify(cupcakes=serialized_cupcakes)
 
@@ -90,7 +90,7 @@ def delete_cupcake(cupcake_id):
 @app.get('/')
 def display_homepage():
     """displays homepage"""
-    
+
     return render_template('cupcake-app.html')
 
 @app.get('/api/cupcakes/<search_term>')

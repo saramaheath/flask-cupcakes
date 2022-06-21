@@ -41,6 +41,24 @@ class Cupcake(db.Model):
             'image': self.image
         }
 
+    @classmethod
+    def fetch_all_cupcakes(cls):
+        """gets all cupcakes"""
+
+        return Cupcake.query.all()
+
+    @classmethod
+    def create_cupcakes(cls, flavor, size, rating, image):
+        """creates a cupcake instance"""
+
+        return Cupcake(
+        flavor=flavor,
+        size=size,
+        rating=rating,
+        image=image
+    )
+
+
 def connect_db(app):
     """Connect this database to provided Flask app. 
     You should call this in your Flask app.
