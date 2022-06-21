@@ -92,3 +92,9 @@ def display_homepage():
     """displays homepage"""
     
     return render_template('cupcake-app.html')
+
+@app.get('/api/cupcakes/<search_term>')
+def search_cupcakes(search_term):
+    cupcakes = Cupcake.query.filter(Cupcake.flavor == search_term).all()
+    serialized_cupcakes = [cupcake.serialize() for cupcake in cupcakes]
+    return jsonify(cupcakes=serialized_cupcakes)

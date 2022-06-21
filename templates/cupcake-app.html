@@ -7,11 +7,17 @@
     <title>Document</title>
 </head>
 <body>
+    <form id='search-form'>
+        <label for="search">Search by flavor:</label>
+        <input id="search" type="text" name="search">
+        <button>Search</button>
+    </form>
+
     <ul id="cupcake-list">
         
     </ul>
 
-    <form onsubmit="addCupcake()">
+    <form onsubmit="handleSubmit()">
         <label for="flavor">Flavor</label>
         <input id="flavor" type="text" name="flavor">
         <label for="size">Size</label>
